@@ -1,0 +1,42 @@
+# The coding systems are used to enhance the value set for the observation resources
+# The key is the name of the attribute in the data dictionary and the value is a list of coding systems
+---
+gleason:
+- system: http://snomed.info/sct
+  code: '372278000'
+  display: Gleason score
+prvol:
+- system: https://loinc.org/
+  code: 15325-4
+  display: Prostate specific Ag/Prostate volume calculated
+likert:
+- system: http://snomed.info/sct/
+  code: '273575009'
+  display: Likert scale (assessment scale}
+ppsa:
+- system: http://snomed.info/sct/
+  code: '63476009'
+  display: Prostate specific antigen measurement
+- system: https://loinc.org/
+  code: 2857-1
+  display: Prostate specific Ag [Mass/volume] in Serum or Plasma
+pirads:
+- system: http://dicom.nema.org/resources/ontology/DCM/
+  code: '130564'
+  display: PI-RADS v2.0
+focality:
+- system: http://snomed.info/sct/
+  code: '396199003'
+  display: Tumour focality
+EPI_Count:
+- system: http://snomed.info/sct/
+  code: '393942000'
+  display: Epithelial cell count
+Lymphocyte_Count:
+- system: http://snomed.info/sct/
+  code: '74765001'
+  display: Lymphocyte count
+Lymphocyte_Percentage:
+- system: http://snomed.info/sct/
+  code: '271036002'
+  display: Lymphocyte percent differential count

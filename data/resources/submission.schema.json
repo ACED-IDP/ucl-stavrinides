@@ -1,0 +1,213 @@
+{
+  "$id": "https://aced-idp.org/ucl-stravrinides/submission.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "submission",
+  "type": "object",
+  "description": "Raw tabular data submitted by UCL",
+  "properties": {
+    "id": {
+      "type": "string",
+      "description": "Patient ID"
+    },
+    "align": {
+      "type": "string",
+      "description": "Aligned lesion"
+    },
+    "ageDiagM": {
+      "type": "integer",
+      "description": "Age at Diagnosis in Months"
+    },
+    "ageDiagY": {
+      "type": "integer",
+      "description": "Age at Diagnosis in Years"
+    },
+    "ppsa": {
+      "type": "number",
+      "description": "Presenting PSA at diagnosis"
+    },
+    "BxPreDiag": {
+      "type": "integer",
+      "description": "Biopsy before diagnosis"
+    },
+    "psaBx": {
+      "type": "number",
+      "description": "PSA at Biopsy A"
+    },
+    "months.diag": {
+      "type": "integer",
+      "description": "Months that elapsed since prostate cancer diagnosis"
+    },
+    "gleason": {
+      "type": "string",
+      "description": "Gleason grade"
+    },
+    "mccl": {
+      "type": "integer",
+      "description": "Maximum Cancer Core Length in mm"
+    },
+    "ucl": {
+      "type": "string",
+      "description": "UCL Definition"
+    },
+    "prvol": {
+      "type": "number",
+      "description": "Prostate volume on MRI"
+    },
+    "side": {
+      "type": "string",
+      "description": "Sampled area side (Left or Right)"
+    },
+    "zone": {
+      "type": "string",
+      "description": "Sampled area zone (Peripheral, Transition, Both)"
+    },
+    "loc": {
+      "type": "string",
+      "description": "Sampled area location (Posterior, Anterior or combinations)"
+    },
+    "level": {
+      "type": "string",
+      "description": "Sampled area level (Base, Mid-gland, Apex or combinations)"
+    },
+    "likert": {
+      "type": "integer",
+      "description": "Likert score of sampled MRI area"
+    },
+    "pirads": {
+      "type": "integer",
+      "description": "PI-RADSv2 score of sampled MRI area"
+    },
+    "precise": {
+      "type": "integer",
+      "description": "PRECISE score of sampled MRI area (only for timepoint B)"
+    },
+    "adcMean": {
+      "type": "number",
+      "description": "Mean apparent diffusion coefficient of sampled MRI area"
+    },
+    "adcn": {
+      "type": "number",
+      "description": "Mean apparent diffusion coefficient of sampled MRI area (normalised by contralateral benign prostate ADC)"
+    },
+    "adcu": {
+      "type": "number",
+      "description": "Mean apparent diffusion coefficient of sampled MRI area (normalised by urine ADC)"
+    },
+    "focality": {
+      "type": "string",
+      "description": "Lesion focality"
+    },
+    "best": {
+      "type": "string",
+      "description": "MRI sequence on which lesion is best seen"
+    },
+    "bestVol": {
+      "type": "number",
+      "description": "Volume of lesion on best sequence (ml)"
+    },
+    "t2Vol": {
+      "type": "number",
+      "description": "Lesion volume on T2 (ml)"
+    },
+    "Epi_Count": {
+      "type": "integer",
+      "description": "Total number of epithelial cells within all tissue areas on H&E"
+    },
+    "Stroma_Count": {
+      "type": "integer",
+      "description": "Total number of stromal cells within all tissue areas on H&E"
+    },
+    "Lymphocyte_Count": {
+      "type": "integer",
+      "description": "Total number of lymphocytes within all tissue areas on H&E"
+    },
+    "Lymphocyte_Percentage": {
+      "type": "number",
+      "description": "% of lymphocytes within all tissue areas on H&E"
+    },
+    "Irani_Gscore": {
+      "type": "integer",
+      "description": "Irani score (number of lymphocytes in largest inflammatory cluster)"
+    },
+    "Tissue_Area": {
+      "type": "number",
+      "description": "Tissue area (square mm)"
+    },
+    "Epithelial_Area": {
+      "type": "number",
+      "description": "Epithelial area (square mm)"
+    },
+    "Stromal_Area": {
+      "type": "number",
+      "description": "Stromal area (square mm)"
+    },
+    "Inflammatory_Area": {
+      "type": "number",
+      "description": "Inflammation area (square mm)"
+    },
+    "Epithelial_Area_Percentage": {
+      "type": "number",
+      "description": "% epithelial area (epithelial area fraction)"
+    },
+    "Stromal_Area_Percentage": {
+      "type": "number",
+      "description": "% stromal area (stromal area fraction)"
+    },
+    "Inflammatory_Area_Percentage": {
+      "type": "number",
+      "description": "% inflammation area (inflammation area fraction)"
+    },
+    "Epithelial_Stromal_Ratio": {
+      "type": "number",
+      "description": "Epithelial area/Stromal area (square mm)"
+    },
+    "Lumen_Area": {
+      "type": "number",
+      "description": "Total area detected as lumen within all tissue areas (square mm)"
+    },
+    "Lumen_Density": {
+      "type": "number",
+      "description": "Lumen area/tissue area"
+    },
+    "Lumen_Density_Gland": {
+      "type": "number",
+      "description": "Lumen area/epithelial area"
+    },
+    "Annotated_Cancer_Area": {
+      "type": "number",
+      "description": "Total area of cancer annotated by pathologist"
+    },
+    "Normal_Area": {
+      "type": "number",
+      "description": "Area classified as normal by classifier"
+    },
+    "PIN_Area": {
+      "type": "number",
+      "description": "Area classified as PIN by classifier"
+    },
+    "Gleason_3_Area": {
+      "type": "number",
+      "description": "Area classified as G3 by classifier"
+    },
+    "Gleason_4_Area": {
+      "type": "number",
+      "description": "Area classified as G4 by classifier"
+    },
+    "Gleason_5_Area": {
+      "type": "number",
+      "description": "Area classified as G5 or higher by classifier"
+    },
+    "Gleason_Primary": {
+      "type": "integer",
+      "description": "Primary Gleason according to classifier"
+    },
+    "Gleason_Secondary": {
+      "type": "integer",
+      "description": "Secondary Gleason according to classifier"
+    },
+    "Grade_Group": {
+      "type": "integer",
+      "description": "Grade Group according to classifier"
+    }
+  }
+}

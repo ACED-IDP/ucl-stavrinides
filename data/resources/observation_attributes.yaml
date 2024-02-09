@@ -1,0 +1,54 @@
+# this file contains the list of attributes that are used to create Observation on [Condition, Specimen] resources.
+# The key is the name of the FHIR resource and the values are the fields from the data dictionary.
+---
+Condition:
+- ageDiagY
+- align
+- ppsa
+- BxPreDiag
+- psaBx
+- months_diag
+- gleason
+Specimen:
+- mccl
+- ucl
+- prvol
+- side
+- zone
+- loc
+- level
+- likert
+- pirads
+- precise
+- adcMean
+- adcn
+- adcu
+- focality
+- best
+- bestVol
+- t2Vol
+- Epi_Count
+- Stroma_Count
+- Lymphocyte_Count
+- Lymphocyte_Percentage
+- Irani_Gscore
+- Tissue_Area
+- Epithelial_Area
+- Stromal_Area
+- Inflammatory_Area
+- Epithelial_Area_Percentage
+- Stromal_Area_Percentage
+- Inflammatory_Area_Percentage
+- Epithelial_Stromal_Ratio
+- Lumen_Area
+- Lumen_Density
+- Lumen_Density_Gland
+- Annotated_Cancer_Area
+- Normal_Area
+- PIN_Area
+- Gleason_3_Area
+- Gleason_4_Area
+- Gleason_5_Area
+- Gleason_Primary
+- Gleason_Secondary
+- Grade_Group
