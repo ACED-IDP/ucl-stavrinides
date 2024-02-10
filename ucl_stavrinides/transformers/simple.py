@@ -85,11 +85,19 @@ def generic_prostate_cancer_condition(subject: Reference) -> Condition:
     return Condition(**CONDITION)
 
 
+def additional_observation_codings(attribute) -> list[dict]:
+    """Additional codings for the observation."""
+
+    if attribute in ADDITIONAL_CODINGS:
+        return ADDITIONAL_CODINGS[attribute]
+    return []
+
+
 class SimpleTransformer(Submission):
     """Performs the most simple transformation possible."""
     deconstructed_id: DeconstructedID = None
 
-    def __init__(self, *args: Any, **kwargs: Any) -> None:
+    def __init__(self, *args: Any, **kwargs: Any) -> None: # noqa
         super().__init__(**kwargs)
         # TODO replace with @computed when we migrate to pydantic +2
         self.deconstructed_id = split_id(self.id)
@@ -108,6 +116,8 @@ class SimpleTransformer(Submission):
 
     def to_fhir(self, deconstructed_id: DeconstructedID, research_study: ResearchStudy) -> [Resource]:
         """Convert to FHIR."""
+        exception_msg_part = None
+        research_subject = None
         try:
 
             exception_msg_part = 'Patient'
@@ -172,7 +182,7 @@ class SimpleTransformer(Submission):
             raise e
 
         patient_graph = [patient, specimen, procedure, condition]
-        if research_study:
+        if research_study and research_subject:
             patient_graph.append(research_subject)
 
         return patient_graph + specimen_observations + condition_observations
@@ -180,15 +190,20 @@ class SimpleTransformer(Submission):
     def create_observations(self, subject, focus, attributes) -> list[Observation]:
         """Create observations."""
         observations = []
+
+        # for all attributes in raw record ...
         for attribute in attributes:
 
+            # that are not null ...
             value = getattr(self, attribute)
             if not value:
                 continue
 
+            # get the field info from the model ...
             field_info = self.model_fields.get(attribute)
             assert field_info, f"Could not find field info for {attribute}"
 
+            # and create an observation
             subject_identifier = get_official_identifier(subject).value
             focus_identifier = get_official_identifier(focus).value
             identifier = populate_identifier(value=f"{subject_identifier}-{focus_identifier}-{attribute}")
@@ -206,7 +221,7 @@ class SimpleTransformer(Submission):
                                                display=field_info.description),
             )
 
-            _ = self.additional_observation_codings(attribute)
+            _ = additional_observation_codings(attribute)
             if _:
                 observation.code.coding.extend(_)
 
@@ -225,21 +240,21 @@ class SimpleTransformer(Submission):
 
         return observations
 
-    def additional_observation_codings(self, attribute) -> list[dict]:
-        """Additional codings for the observation."""
 
-        if attribute in ADDITIONAL_CODINGS:
-            return ADDITIONAL_CODINGS[attribute]
-        return []
-
-
-def transform_csv(input_path: pathlib.Path, output_path: pathlib.Path, already_seen: set = set(), verbose: bool = False) -> TransformationResults:
+def transform_csv(input_path: pathlib.Path,
+                  output_path: pathlib.Path,
+                  already_seen: set = None,
+                  verbose: bool = False) -> TransformationResults:
     """Transform a CSV file to FHIR resources."""
+
+    if already_seen is None:
+        already_seen = set()
 
     emitters = {}
 
     df = pandas.read_csv(input_path)
     df = df.replace({np.nan: None})
+    # TODO: perhaps the dataframe does not return rows in same order, ie idempotent. sort here?
     records = df.to_dict(orient='records')
 
     parsed_count = 0
@@ -254,7 +269,7 @@ def transform_csv(input_path: pathlib.Path, output_path: pathlib.Path, already_s
         research_study.id = id_
         research_study.identifier = [identifier]
         already_seen.add(research_study.id)
-        get_emitter(emitters, research_study.resource_type, output_path, verbose=False).write(research_study.json() + "\n")
+        get_emitter(emitters, research_study.resource_type, str(output_path), verbose=False).write(research_study.json() + "\n")
         emitted_count += 1
 
     except ValidationError as e:
@@ -280,7 +295,7 @@ def transform_csv(input_path: pathlib.Path, output_path: pathlib.Path, already_s
                 if resource.id in already_seen:
                     continue
                 already_seen.add(resource.id)
-                get_emitter(emitters, resource.resource_type, output_path, verbose=False).write(resource.json() + "\n")
+                get_emitter(emitters, resource.resource_type, str(output_path), verbose=False).write(resource.json() + "\n")
                 emitted_count += 1
         except ValidationError as e:
             transformer_errors.append(e)
