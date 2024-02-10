@@ -48,7 +48,7 @@ def spreadsheet_json_schema_cli(input_path: str, output_path: str, verbose):
 
     \b
     Use this command to track changes to the data dictionary.
-    INPUT_PATH: where to read master spreadsheet default: data/raw/DetroitROCS_cancer_subtypes_2023-09-25.xlsx
+    INPUT_PATH: where to read master spreadsheet default: docs/IDP_UCL_VS_data_dictionary-IDP_Mapping.xlsx
     OUTPUT_PATH: where to write per subject csvs default: data/resources/submission.schema.json
     """
     try:

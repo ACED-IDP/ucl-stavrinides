@@ -1,4 +1,4 @@
-# DetroitROCS User Guide
+# ucl-stavrinides User Guide
 
 ## Overview
 
