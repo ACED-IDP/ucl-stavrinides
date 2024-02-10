@@ -14,3 +14,5 @@ setuptools
 pre-commit
 # code generation
 datamodel-code-generator
+# see https://github.com/psf/black/issues/3111#issuecomment-1177362541
+click>=7.1.2,<=8.0.4
