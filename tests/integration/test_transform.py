@@ -1,7 +1,5 @@
 import pathlib
 
-from gen3_util.meta.validator import validate
-
 from ucl_stavrinides.transformers.simple import transform_csv
 
 
@@ -26,7 +24,8 @@ def test_transform_dummy_data(test_fixture_paths):
         validation_errors.extend(results.validation_errors)
         transformer_errors.extend(results.transformer_errors)
 
-        validate(config=None, directory_path=output_path)
+        # remove redundant validation, as it will be done in the next step, `g3t commit`
+        # validate(config=None, directory_path=output_path)
 
     print(f"emitted {emitted_count} resources out of {parsed_count} input resources")
     assert len(validation_errors) == 0, f"validation_errors errors {transformer_errors}"

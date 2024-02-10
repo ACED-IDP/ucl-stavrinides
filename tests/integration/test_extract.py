@@ -6,20 +6,11 @@ from ucl_stavrinides.models.submission import Submission
 from ucl_stavrinides.transformers import print_validation_error
 
 
-def test_submission_dictionary():
+def test_submission_dictionary(expected_keys):
     """Was the submission model created correctly?"""
     from ucl_stavrinides.models.submission import Submission
     _ = Submission.schema()
     assert _, "do not have a schema"
-    expected_keys = ['Annotated_Cancer_Area', 'BxPreDiag', 'Epi_Count', 'Epithelial_Area', 'Epithelial_Area_Percentage',
-                     'Epithelial_Stromal_Ratio', 'Gleason_3_Area', 'Gleason_4_Area', 'Gleason_5_Area',
-                     'Gleason_Primary', 'Gleason_Secondary', 'Grade_Group', 'Inflammatory_Area',
-                     'Inflammatory_Area_Percentage', 'Irani_Gscore', 'Lumen_Area', 'Lumen_Density',
-                     'Lumen_Density_Gland', 'Lymphocyte_Count', 'Lymphocyte_Percentage', 'Normal_Area', 'PIN_Area',
-                     'Stroma_Count', 'Stromal_Area', 'Stromal_Area_Percentage', 'Tissue_Area', 'adcMean', 'adcn',
-                     'adcu', 'ageDiagM', 'ageDiagY', 'align', 'best', 'bestVol', 'focality', 'gleason', 'id', 'level',
-                     'likert', 'loc', 'mccl', 'months.diag', 'pirads', 'ppsa', 'precise', 'prvol', 'psaBx', 'side',
-                     't2Vol', 'ucl', 'zone']
     actual_keys = sorted(_['properties'].keys())
     assert actual_keys == expected_keys, "do not have expected keys"
 
