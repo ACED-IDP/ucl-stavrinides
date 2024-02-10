@@ -19,13 +19,12 @@ def test_transform_dummy_data(test_fixture_paths):
 
         assert input_path.exists(), f"File must exist {input_path}"
 
-        parsed_count_, emitted_count_, validation_errors_, transformer_errors_ = \
-            transform_csv(input_path, output_path)
+        results = transform_csv(input_path, output_path)
 
-        parsed_count += parsed_count_
-        emitted_count += emitted_count_
-        validation_errors.extend(validation_errors_)
-        transformer_errors.extend(transformer_errors_)
+        parsed_count += results.parsed_count
+        emitted_count += results.emitted_count
+        validation_errors.extend(results.validation_errors)
+        transformer_errors.extend(results.transformer_errors)
 
         validate(config=None, directory_path=output_path)
 
