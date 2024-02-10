@@ -64,7 +64,6 @@ def split_id(id_str) -> None | DeconstructedID:
 
     # If there is a match, create a PatientInfo Pydantic model
     if match:
-        groups = match.groups()
         deconstructed_id = DeconstructedID(
             patient_id=match.group("patient_id"),
             mri_area=match.group("mri_area"),
