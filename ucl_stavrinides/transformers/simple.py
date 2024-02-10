@@ -29,7 +29,10 @@ with open("data/resources/observation_attributes.yaml") as fp:
     OBSERVATION_ATTRIBUTES = yaml.safe_load(fp)
 
 with open("data/resources/ResearchStudy.yaml") as fp:
-    RESEARCH_STUDY_PROPERTIES = yaml.safe_load(fp)
+    RESEARCH_STUDY = yaml.safe_load(fp)
+
+with open("data/resources/Condition.yaml") as fp:
+    CONDITION = yaml.safe_load(fp)
 
 
 class DeconstructedID(BaseModel):
@@ -78,61 +81,8 @@ def split_id(id_str) -> None | DeconstructedID:
 
 def generic_prostate_cancer_condition(subject: Reference) -> Condition:
     """Create a generic prostate cancer condition."""
-    _ = {
-        "resourceType": "Condition",
-        "clinicalStatus": {
-            "coding": [{
-                "system": "http://terminology.hl7.org/CodeSystem/condition-clinical",
-                "code": "active",
-                "display": "active"
-            }]
-        },
-        "verificationStatus": {
-            "coding": [{
-                "system": "http://terminology.hl7.org/CodeSystem/condition-ver-status",
-                "code": "confirmed",
-                "display": "confirmed"
-            }]
-        },
-        "category": [{
-            "coding": [
-                {
-                    "system": "http://terminology.hl7.org/CodeSystem/condition-category",
-                    "code": "encounter-diagnosis",
-                    "display": "Encounter Diagnosis"
-                },
-                {
-                    "system": "http://snomed.info/sct",
-                    "code": "439401001",
-                    "display": "Diagnosis"
-                }]
-        }],
-        "severity": {
-            "coding": [{
-                "system": "http://snomed.info/sct",
-                "code": "24484000",
-                "display": "Severe"
-            }]
-        },
-        "code": {
-            "coding": [{
-                "system": "http://snomed.info/sct",
-                "code": "399068003",
-                "display": "Malignant tumor of prostate"
-            }],
-            "text": "Malignant tumor of prostate"
-        },
-        "bodySite": [{
-            "coding": [{
-                "system": "http://snomed.info/sct",
-                "code": "41216001",
-                "display": "Prostatic structure (body structure)"
-            }],
-            "text": "Prostatic structure (body structure)"
-        }],
-        "subject": subject
-    }
-    return Condition(**_)
+    CONDITION['subject'] = subject
+    return Condition(**CONDITION)
 
 
 class SimpleTransformer(Submission):
@@ -298,7 +248,7 @@ def transform_csv(input_path: pathlib.Path, output_path: pathlib.Path, already_s
     transformer_errors = []
 
     try:
-        research_study = ResearchStudy(**RESEARCH_STUDY_PROPERTIES)
+        research_study = ResearchStudy(**RESEARCH_STUDY)
         identifier = populate_identifier(value=PROJECT_ID)
         id_ = mint_id(identifier=identifier, resource_type='ResearchStudy')
         research_study.id = id_
@@ -309,7 +259,7 @@ def transform_csv(input_path: pathlib.Path, output_path: pathlib.Path, already_s
 
     except ValidationError as e:
         transformer_errors.append(e)
-        print_transformation_error(e, parsed_count, input_path, RESEARCH_STUDY_PROPERTIES, verbose)
+        print_transformation_error(e, parsed_count, input_path, RESEARCH_STUDY, verbose)
         raise e
 
     for record in records:
