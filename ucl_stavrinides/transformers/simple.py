@@ -34,6 +34,9 @@ with open("data/resources/ResearchStudy.yaml") as fp:
 with open("data/resources/Condition.yaml") as fp:
     CONDITION = yaml.safe_load(fp)
 
+with open("data/resources/Observation.yaml") as fp:
+    OBSERVATION = yaml.safe_load(fp)
+
 
 class DeconstructedID(BaseModel):
     """Split the id into component parts."""
@@ -153,7 +156,7 @@ class SimpleTransformer(Submission):
                                                        display="Magnetic resonance imaging")
 
             exception_msg_part = 'Specimen'
-            identifier = populate_identifier(value=f"{deconstructed_id.patient_id}/{lesion_identifier}")
+            identifier = populate_identifier(value=f"{self.id}")
             specimen = Specimen(id=mint_id(identifier=identifier, resource_type='Specimen'),
                                 identifier=[identifier],
                                 collection={'procedure': to_reference(procedure)},
@@ -208,22 +211,17 @@ class SimpleTransformer(Submission):
             focus_identifier = get_official_identifier(focus).value
             identifier = populate_identifier(value=f"{subject_identifier}-{focus_identifier}-{attribute}")
             id_ = mint_id(identifier=identifier, resource_type='Observation')
+            more_codings = additional_observation_codings(attribute)
 
-            observation = Observation(
-                id=id_,
-                identifier=[identifier],
-                status="final",
-                subject=to_reference(subject),
-                focus=[to_reference(focus)],
-                category=[populate_codeable_concept(system="http://terminology.hl7.org/CodeSystem/observation-category",
-                                                    code="laboratory", display="Laboratory")],
-                code=populate_codeable_concept(code=attribute,
-                                               display=field_info.description),
-            )
-
-            _ = additional_observation_codings(attribute)
-            if _:
-                observation.code.coding.extend(_)
+            if 'code' in OBSERVATION:
+                del OBSERVATION['code']
+            observation = Observation(**OBSERVATION, code=populate_codeable_concept(code=attribute, display=field_info.description))
+            observation.id = id_
+            observation.identifier = [identifier]
+            observation.subject = to_reference(subject)
+            observation.focus = [to_reference(focus)]
+            if more_codings:
+                observation.code.coding.extend(more_codings)
 
             # the annotations are often decorated with Optional, so cast to string and check for the type
             field_type = str(field_info.annotation)
