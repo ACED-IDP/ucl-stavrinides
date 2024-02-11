@@ -63,13 +63,13 @@ data/resources/
 └──  observation_codings.yaml
 
 
-$head -5 data/resources/ResearchStudy.yaml 
+$head -5 data/resources/ResearchStudy.yaml
 # This file contains the properties of the ResearchStudy resource
 ---
 status: active
 description: ACED IDP UCL Stravrinides Project
 
-$ head -10  data/resources/observation_attributes.yaml 
+$ head -10  data/resources/observation_attributes.yaml
 # this file contains the list of attributes that are used to create Observation on [Condition, Specimen] resources.
 # The key is the name of the FHIR resource and the values are the fields from the data dictionary.
 ---
@@ -80,7 +80,7 @@ Condition:
 - BxPreDiag
 ...
 
- head -11  data/resources/observation_codings.yaml 
+ head -11  data/resources/observation_codings.yaml
 # The coding systems are used to enhance the value set for the observation resources
 # The key is the name of the attribute in the data dictionary and the value is a list of coding systems
 ---
@@ -100,8 +100,10 @@ prvol:
 
 #### Example:
 
+##### Transforming a csv file to FHIR
+
 ```bash
-$ ucl_stavrinides transform tests/fixtures/IDP_UCL_VS_dataset/dummy_data_30pid.csv 
+$ ucl_stavrinides transform tests/fixtures/IDP_UCL_VS_dataset/dummy_data_30pid.csv
 Transformed tests/fixtures/IDP_UCL_VS_dataset/dummy_data_30pid.csv into META
 
 $ g3t utilities meta validate
@@ -118,6 +120,52 @@ msg: OK
 
 ```
 
+##### Uploading the FHIR resources to the server
+
+```bash
+$ g3t commit -m "Initial upload"
+$ g3t push
+
+```
+
+##### Adding dummy image files
+
+See [dummy file generation](tests/fixtures/IDP_UCL_VS_dataset-files/README.md).
+
+###### association a file with a specimen
+```shell
+# find all specimen identifiers, and add the file to the index in parallel
+$ cat META/Specimen.ndjson | jq -r '.identifier[0].value' | xargs -P 8 -L 1 -I SPECIMEN g3t add --specimen SPECIMEN tests/fixtures/IDP_UCL_VS_dataset-files/dummy_data_30pid/SPECIMEN_mri_guided_prostate_biopsy.jpeg
+# create metadata for the files
+$ g3t utilities meta create
+```
+
+###### commit and push the files
+```shell
+$ g3t commit -m "Add image files"
+$ g3t push
+```
+
+###### confirm the files are uploaded
+```shell
+$ g3t status
+
+remote:
+  resource_counts:
+    Condition: 30
+    DocumentReference: 160
+    FamilyMemberHistory: 0
+    Medication: 0
+    MedicationAdministration: 0
+    Observation: 6696
+    Patient: 30
+    ResearchStudy: 1
+    ResearchSubject: 30
+    Specimen: 160
+    Substance: 0
+    Task: 0
+
+```
 
 
 ### `dictionary`
