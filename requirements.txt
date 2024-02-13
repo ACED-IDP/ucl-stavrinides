@@ -1,4 +1,5 @@
-gen3_tracker>=0.0.2rc5
+gen3_tracker>=0.0.2rc6
+click
 pandas
 numpy
 openpyxl
