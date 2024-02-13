@@ -2,7 +2,7 @@
 
 ## Overview
 
-`ucl_stavrinides` is a command-line tool designed to manage the metadata. The tool provides various commands, each serving a specific purpose. Below, you'll find a brief guide on how to use the available commands.
+`g3t_etl` is a command-line tool designed to manage the metadata. The tool provides various commands, each serving a specific purpose. Below, you'll find a brief guide on how to use the available commands.
 
 ## Getting Started
 
@@ -34,6 +34,36 @@ username: your-email@institution.edu
 
 ## Commands
 
+### `dictionary`
+
+The `dictionary` is a design stage utility that reads the master data dictionary and creates a corresponding python class.
+
+![](docs/fhir_mapping_dictionary.png)
+
+#### Usage:
+
+```bash
+$ g3t_etl dictionary --help
+Usage: g3t_etl dictionary [OPTIONS] [INPUT_PATH] [OUTPUT_PATH]
+
+  Code generation. Create python model class from a dictionary spreadsheet.
+
+  Use this command to track changes to the data dictionary.
+  INPUT_PATH: where to read master spreadsheet default: docs/IDP_UCL_VS_data_dictionary-IDP_Mapping.xlsx
+  OUTPUT_PATH: where to write per subject csvs default: templates/submission.schema.json
+
+
+```
+
+#### Example:
+
+```bash
+Transformed docs/IDP_UCL_VS_data_dictionary-IDP_Mapping.xlsx into jsonschema file in templates/submission.schema.json
+Use this command to generate pydantic model from schema:
+datamodel-codegen  --input templates/submission.schema.json --input-file-type jsonschema  --output ucl_stavrinides/submission.py --field-extra-keys json_schema_extra
+```
+
+
 ### `transform`
 
 The `transform` reads lines from the csv and creates resources representing data for a specific subject and time point.
@@ -41,8 +71,8 @@ The `transform` reads lines from the csv and creates resources representing data
 #### Usage:
 
 ```bash
-ucl_stavrinides transform --help
-Usage: ucl_stavrinides transform [OPTIONS] INPUT_PATH [OUTPUT_PATH]
+g3t_etl transform --help
+Usage: g3t_etl transform [OPTIONS] INPUT_PATH [OUTPUT_PATH]
 
   Transform csv based on data dictionary to FHIR.
 
@@ -57,43 +87,14 @@ Usage: ucl_stavrinides transform [OPTIONS] INPUT_PATH [OUTPUT_PATH]
 The transformations are based on the data dictionary and the following resources:
 
 ```shell
-data/resources/
+templates/
+├── Condition.yaml
+├── Observation.yaml
 ├── ResearchStudy.yaml
-├── observation_attributes.yaml
-└──  observation_codings.yaml
+└── submission.schema.json
 
-
-$head -5 data/resources/ResearchStudy.yaml
-# This file contains the properties of the ResearchStudy resource
----
-status: active
-description: ACED IDP UCL Stravrinides Project
-
-$ head -10  data/resources/observation_attributes.yaml
-# this file contains the list of attributes that are used to create Observation on [Condition, Specimen] resources.
-# The key is the name of the FHIR resource and the values are the fields from the data dictionary.
----
-Condition:
-- ageDiagY
-- align
-- ppsa
-- BxPreDiag
-...
-
- head -11  data/resources/observation_codings.yaml
-# The coding systems are used to enhance the value set for the observation resources
-# The key is the name of the attribute in the data dictionary and the value is a list of coding systems
----
-gleason:
-- system: http://snomed.info/sct
-  code: '372278000'
-  display: Gleason score
-prvol:
-- system: https://loinc.org/
-  code: 15325-4
-  display: Prostate specific Ag/Prostate volume calculated
-...
-
+Where Condition.yaml, Observation.yaml, ResearchStudy.yaml are templates for the respective resources.
+and submission.schema.json is the master data dictionary.
 ```
 
 
@@ -103,11 +104,11 @@ prvol:
 ##### Transforming a csv file to FHIR
 
 ```bash
-$ ucl_stavrinides transform tests/fixtures/IDP_UCL_VS_dataset/dummy_data_30pid.csv
+$ g3t_etl transform tests/fixtures/IDP_UCL_VS_dataset/dummy_data_30pid.csv
 Transformed tests/fixtures/IDP_UCL_VS_dataset/dummy_data_30pid.csv into META
 
 $ g3t utilities meta validate
-resources:
+templates:
   summary:
     Procedure: 160
     Specimen: 160
@@ -168,32 +169,10 @@ remote:
 ```
 
 
-### `dictionary`
+Loading the tests/fixtures/IDP_UCL_VS_dataset/dummy_data_30pid.csv metadata into a test instance produces the following:
 
-The `dictionary` is a design stage utility that reads the master data dictionary and creates a corresponding python class.
-
-#### Usage:
-
-```bash
-$ ucl_stavrinides dictionary --help
-Usage: ucl_stavrinides dictionary [OPTIONS] [INPUT_PATH] [OUTPUT_PATH]
-
-  Code generation. Create python model class from dictionary spreadsheet.
-
-  Use this command to track changes to the data dictionary.
-  INPUT_PATH: where to read master spreadsheet default: data/raw/DetroitROCS_cancer_subtypes_2023-09-25.xlsx
-  OUTPUT_PATH: where to write per subject csvs default: data/resources/submission.schema.json
-
-```
-
-#### Example:
-
-```bash
-ucl_stavrinides dictionary
-Transformed docs/IDP_UCL_VS_data_dictionary-IDP_Mapping.xlsx into jsonschema file in data/resources/submission.schema.json
-Use this command to generate pydantic model from schema:
-datamodel-codegen  --input data/resources/submission.schema.json --input-file-type jsonschema  --output ucl_stavrinides/models/submission.py
-```
-
+![](docs/patient-explorer.png)
+![](docs/observation-explorer.png)
+![](docs/files-explorer.png)
 
 Feel free to explore additional functionalities and options by referring to the [aced documentation](https://aced-idp.github.io/)
