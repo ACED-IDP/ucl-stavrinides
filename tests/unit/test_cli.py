@@ -1,6 +1,6 @@
 from click.testing import CliRunner
 
-from ucl_stavrinides.cli import cli
+from g3t_etl.cli import cli
 
 
 def test_cli():

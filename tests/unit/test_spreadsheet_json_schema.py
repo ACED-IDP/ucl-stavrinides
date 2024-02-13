@@ -1,4 +1,4 @@
-from ucl_stavrinides.models.submission_dictionary import spreadsheet_json_schema
+from g3t_etl.submission_dictionary import spreadsheet_json_schema
 
 
 def test_spreadsheet_json_schema(data_dictionary_input_path, expected_keys):

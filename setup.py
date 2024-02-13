@@ -37,7 +37,7 @@ setup(
     # There are some restrictions on what makes a valid project name
     # specification here:
     # https://packaging.python.org/specifications/core-metadata/#name
-    name='aced-ucl-stavrinides',  # Required
+    name='g3t-etl',  # Required
 
     # Versions should comply with PEP 440:
     # https://packaging.python.org/en/latest/single_source_version.html
@@ -121,7 +121,7 @@ setup(
 
     entry_points={
         'console_scripts': [
-            'ucl_stavrinides = ucl_stavrinides.cli:cli',
+            'g3t_etl = g3t_etl.cli:cli',
         ],
     },
 

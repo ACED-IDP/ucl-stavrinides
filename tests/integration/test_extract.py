@@ -2,13 +2,13 @@ import numpy as np
 import pandas
 from pydantic import ValidationError
 
-from ucl_stavrinides.models.submission import Submission
-from ucl_stavrinides.transformers import print_validation_error
+from g3t_etl import print_validation_error
+from ucl_stavrinides.submission import Submission
 
 
 def test_submission_dictionary(expected_keys):
     """Was the submission model created correctly?"""
-    from ucl_stavrinides.models.submission import Submission
+    from ucl_stavrinides.submission import Submission
     _ = Submission.schema()
     assert _, "do not have a schema"
     actual_keys = sorted(_['properties'].keys())

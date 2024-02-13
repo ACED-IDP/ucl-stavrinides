@@ -1,14 +1,17 @@
 import pathlib
 
-from ucl_stavrinides.transformers.simple import transform_csv
+from g3t_etl.factory import transform_csv
+from g3t_etl.loader import load_plugins
 
 
-def test_transform_dummy_data(test_fixture_paths):
+def test_transform_dummy_data(test_fixture_paths, plugins):
     """Transform the dummy data to FHIR, store in test fixture."""
     validation_errors = []
     transformer_errors = []
     emitted_count = 0
     parsed_count = 0
+    load_plugins(plugins)
+
     for input_path in test_fixture_paths:
 
         output_path = pathlib.Path('tests/fixtures/IDP_UCL_VS_dataset-FHIR') / input_path.stem

@@ -4,6 +4,12 @@ import pytest
 
 
 @pytest.fixture
+def plugins() -> list[str]:
+    """Return a list of plugins."""
+    return ['ucl_stavrinides.transformer']
+
+
+@pytest.fixture
 def test_fixture_paths() -> list[str]:
     """Return a path to dummy data."""
     return [
