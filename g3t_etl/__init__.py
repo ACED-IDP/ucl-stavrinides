@@ -11,7 +11,6 @@ from fhir.resources.resource import Resource
 from gen3_util.common import read_ndjson_file
 from nested_lookup import nested_lookup
 from pydantic import BaseModel, computed_field, ConfigDict, ValidationError, field_validator
-from gen3_util import ACED_NAMESPACE
 logger = logging.getLogger(__name__)
 
 IDENTIFIER_USE = 'official'
