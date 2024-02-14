@@ -14,19 +14,17 @@ git clone https://github.com/ACED-IDP/ucl-stavrinides
 python3 -m venv venv ; source venv/bin/activate
 pip install -r requirements.txt
 pip install -r requirements-dev.txt
-pip install -e .
-```
-**Install Dependencies**: Ensure you have the necessary dependencies installed.
-The installation process will install gen3 tracker utility, see [how to configure it](https://aced-idp.github.io/getting-started/).
 
-**Verify installation**: Run the following command to verify the installation:
-
-```bash
-g3t ping
-msg: 'Configuration OK: Connected using profile:xxxx'
-endpoint: https://aced-idp.org
-username: your-email@institution.edu
 ```
+
+# Install your Transformer package
+```shell
+export PYTHONPATH=ucl_stavrinides:$PYTHONPATH
+export G3T_PLUGIN=ucl_stavrinides.transformer
+g3t_etl --help
+
+```
+
 
 ### Global Options
 
@@ -60,6 +58,7 @@ Usage: g3t_etl dictionary [OPTIONS] [INPUT_PATH] [OUTPUT_PATH]
 ```bash
 Transformed docs/IDP_UCL_VS_data_dictionary-IDP_Mapping.xlsx into jsonschema file in templates/submission.schema.json
 Use this command to generate pydantic model from schema:
+
 datamodel-codegen  --input templates/submission.schema.json --input-file-type jsonschema  --output ucl_stavrinides/submission.py --field-extra-keys json_schema_extra
 ```
 
