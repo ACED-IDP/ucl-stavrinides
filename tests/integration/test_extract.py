@@ -19,8 +19,11 @@ def test_submission_dummy_data(test_fixture_paths):
     """Can we read the dummy data?"""
     for dummy_data_path in test_fixture_paths:
         assert dummy_data_path.exists(), f"do not have {dummy_data_path}"
-        df = pandas.read_csv(dummy_data_path)
+        # clean up the data: remove leading/trailing spaces, replace NaN with None
+        df = pandas.read_csv(dummy_data_path, skipinitialspace=True, skip_blank_lines=True, comment="#")
+        df = df.map(lambda x: x.strip() if isinstance(x, str) else x)
         df = df.replace({np.nan: None})
+
         records = df.to_dict(orient='records')
         c = 1
         for record in records:
@@ -28,5 +31,5 @@ def test_submission_dummy_data(test_fixture_paths):
                 _ = Submission(**record)
                 c += 1
             except ValidationError as e:
-                print_validation_error(e, c, dummy_data_path, record)
+                print_validation_error(e, c, dummy_data_path, record, verbose=True)
                 raise e
