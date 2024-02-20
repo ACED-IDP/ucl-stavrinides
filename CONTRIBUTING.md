@@ -13,7 +13,6 @@ git clone https://github.com/ACED-IDP/ucl-stavrinides
 python3 -m venv venv ; source venv/bin/activate
 pip install -r requirements.txt
 pip install -r requirements-dev.txt
-pip install -e .
 ```
 **Install Dependencies**: Ensure you have the necessary dependencies installed.
 The installation process will install gen3 tracker utility, see [how to configure it](https://aced-idp.github.io/getting-started/).
